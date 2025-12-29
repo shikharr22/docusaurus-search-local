@@ -22,6 +22,7 @@ export function generate(config: ProcessedPluginOptions, dir: string): string {
     hideSearchBarWithNoSearchContext,
     useAllContextsWithNoSearchContext,
     fuzzyMatchingDistance,
+    indexContentTypes,
   } = config;
   const indexHash = getIndexHash(config);
   const contents: string[] = [];
@@ -100,6 +101,9 @@ export function generate(config: ProcessedPluginOptions, dir: string): string {
     `export const useAllContextsWithNoSearchContext = ${JSON.stringify(
       !!useAllContextsWithNoSearchContext
     )};`
+  );
+  contents.push(
+    `export const indexContentTypes = ${JSON.stringify(indexContentTypes)};`
   );
   fs.writeFileSync(path.join(dir, "generated.js"), contents.join("\n"));
 

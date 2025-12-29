@@ -221,4 +221,23 @@ export interface PluginOptions {
    * @default 1
    */
   fuzzyMatchingDistance?: number;
+
+  /**
+   * Control which content types to index for better search performance and relevance.
+   * When enabled, only the specified content types will be indexed.
+   *
+   * @default { title: true, heading: true, description: false, keywords: false, content: false }
+   */
+  indexContentTypes?: {
+    /** Index page titles (h1 elements) */
+    title?: boolean;
+    /** Index sub-headings (h2, h3 elements) */
+    heading?: boolean;
+    /** Index meta descriptions */
+    description?: boolean;
+    /** Index meta keywords */
+    keywords?: boolean;
+    /** Index page content text */
+    content?: boolean;
+  };
 }

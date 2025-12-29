@@ -49,6 +49,7 @@ describe("generate", () => {
         "export const searchContextByPaths = null;",
         "export const hideSearchBarWithNoSearchContext = false;",
         "export const useAllContextsWithNoSearchContext = false;",
+        'export const indexContentTypes = {"title":true,"heading":true,"description":false,"keywords":false,"content":false};',
       ],
     ],
     [
@@ -67,6 +68,7 @@ describe("generate", () => {
         "export const searchContextByPaths = null;",
         "export const hideSearchBarWithNoSearchContext = false;",
         "export const useAllContextsWithNoSearchContext = false;",
+        'export const indexContentTypes = {"title":true,"heading":true,"description":false,"keywords":false,"content":false};',
       ],
     ],
     [
@@ -85,6 +87,7 @@ describe("generate", () => {
         "export const searchContextByPaths = null;",
         "export const hideSearchBarWithNoSearchContext = false;",
         "export const useAllContextsWithNoSearchContext = false;",
+        'export const indexContentTypes = {"title":true,"heading":true,"description":false,"keywords":false,"content":false};',
       ],
     ],
     [
@@ -103,6 +106,7 @@ describe("generate", () => {
         "export const searchContextByPaths = null;",
         "export const hideSearchBarWithNoSearchContext = false;",
         "export const useAllContextsWithNoSearchContext = false;",
+        'export const indexContentTypes = {"title":true,"heading":true,"description":false,"keywords":false,"content":false};',
       ],
     ],
     [
@@ -137,6 +141,20 @@ describe("generate", () => {
         searchBarShortcutKeymap: "mod+k",
         searchBarPosition: "auto",
         indexDocs: true,
+        indexContentTypes: {
+          title: true,
+          heading: true,
+          description: false,
+          keywords: false,
+          content: false,
+        },
+        indexContentTypes: {
+          title: true,
+          heading: true,
+          description: false,
+          keywords: false,
+          content: false,
+        },
       } as ProcessedPluginOptions,
       "/tmp"
     );

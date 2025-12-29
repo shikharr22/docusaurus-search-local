@@ -26,6 +26,13 @@ describe("processPluginOptions", () => {
         ignoreCssSelectors: [],
         searchBarPosition: "right",
         removeDefaultStopWordFilter: [],
+        indexContentTypes: {
+          title: true,
+          heading: true,
+          description: false,
+          keywords: false,
+          content: false,
+        },
       },
     ],
     [
@@ -107,6 +114,70 @@ describe("processPluginOptions", () => {
       ignoreCssSelectors: [],
       searchBarPosition: "left",
       removeDefaultStopWordFilter: ["en", "zh"],
+    });
+  });
+
+  test("should set default indexContentTypes when not provided", () => {
+    expect(
+      processPluginOptions(
+        {
+          docsRouteBasePath: "docs",
+          blogRouteBasePath: "blog",
+          docsDir: "docs",
+          blogDir: "blog",
+          language: "en",
+          ignoreFiles: [],
+          ignoreCssSelectors: [],
+        },
+        {
+          siteDir,
+          siteConfig: {
+            themeConfig: {},
+          },
+        }
+      )
+    ).toMatchObject({
+      indexContentTypes: {
+        title: true,
+        heading: true,
+        description: false,
+        keywords: false,
+        content: false,
+      },
+    });
+  });
+
+  test("should merge provided indexContentTypes with defaults", () => {
+    expect(
+      processPluginOptions(
+        {
+          docsRouteBasePath: "docs",
+          blogRouteBasePath: "blog",
+          docsDir: "docs",
+          blogDir: "blog",
+          language: "en",
+          ignoreFiles: [],
+          ignoreCssSelectors: [],
+          indexContentTypes: {
+            description: true,
+            content: true,
+          },
+        },
+        {
+          siteDir,
+          siteConfig: {
+            themeConfig: {},
+          },
+        }
+      )
+    ).toMatchObject({
+      indexContentTypes: {
+        title: true,
+        heading: true,
+        description: true,
+        keywords: false,
+        content: true,
+      },
     });
   });
 });

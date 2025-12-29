@@ -149,6 +149,7 @@ export type ProcessedPluginOptions = Required<
     | "ignoreFiles"
     | "ignoreCssSelectors"
     | "removeDefaultStopWordFilter"
+    | "indexContentTypes"
   >
 > & {
   docsRouteBasePath: string[];
@@ -159,6 +160,7 @@ export type ProcessedPluginOptions = Required<
   ignoreFiles: (string | RegExp)[];
   ignoreCssSelectors: string[];
   removeDefaultStopWordFilter: string[];
+  indexContentTypes: Required<NonNullable<PluginOptions['indexContentTypes']>>;
 };
 
 export interface PostBuildData {

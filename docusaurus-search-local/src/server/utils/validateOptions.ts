@@ -65,6 +65,13 @@ const schema = Joi.object<PluginOptions>({
   useAllContextsWithNoSearchContext: Joi.boolean().default(false),
   forceIgnoreNoIndex: Joi.boolean().default(false),
   fuzzyMatchingDistance: Joi.number().default(1),
+  indexContentTypes: Joi.object({
+    title: Joi.boolean(),
+    heading: Joi.boolean(),
+    description: Joi.boolean(),
+    keywords: Joi.boolean(),
+    content: Joi.boolean(),
+  }).default({}),
 });
 
 export function validateOptions({

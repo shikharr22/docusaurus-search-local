@@ -10,7 +10,7 @@ export function parse(
   html: string,
   type: "docs" | "blog" | "page",
   url: string,
-  { ignoreCssSelectors, forceIgnoreNoIndex }: ProcessedPluginOptions
+  { ignoreCssSelectors, forceIgnoreNoIndex, indexContentTypes }: ProcessedPluginOptions
 ): ParsedDocument | null {
   const $ = cheerio.load(html);
 
@@ -40,5 +40,7 @@ export function parse(
     return parsePage($, url);
   }
 
-  return parseDocument($);
+  return parseDocument($, {
+    indexContentTypes,
+  });
 }

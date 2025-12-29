@@ -33,6 +33,8 @@ export async function scanDocuments(
     contentDocuments,
   ];
 
+  const { indexContentTypes = { title: true, heading: true, description: true, keywords: true, content: true } } = config;
+
   // Process documents in parallel but assign IDs deterministically based on input order
   const processedDocs = await Promise.all(
     DocInfoWithFilePathList.map(async ({ filePath, url, type }, index) => {
@@ -62,18 +64,23 @@ export async function scanDocuments(
     const { parsed, url } = result;
     const { pageTitle, description, keywords, sections, breadcrumb } = parsed;
 
+    // Always generate a title ID for consistency, even if titles aren't indexed
     const titleId = getNextDocId();
 
-    titleDocuments.push({
-      i: titleId,
-      t: pageTitle,
-      u: url,
-      b: breadcrumb,
-    });
-
-    if (description) {
-      descriptionDocuments.push({
+    // Only process title documents if enabled
+    if (indexContentTypes.title) {
+      titleDocuments.push({
         i: titleId,
+        t: pageTitle,
+        u: url,
+        b: breadcrumb,
+      });
+    }
+
+    // Only process description if enabled
+    if (indexContentTypes.description && description) {
+      descriptionDocuments.push({
+        i: getNextDocId(),
         t: description,
         s: pageTitle,
         u: url,
@@ -81,9 +88,10 @@ export async function scanDocuments(
       });
     }
 
-    if (keywords) {
+    // Only process keywords if enabled
+    if (indexContentTypes.keywords && keywords) {
       keywordsDocuments.push({
-        i: titleId,
+        i: getNextDocId(),
         t: keywords,
         s: pageTitle,
         u: url,
@@ -99,16 +107,20 @@ export async function scanDocuments(
           continue;
         }
 
-        headingDocuments.push({
-          i: getNextDocId(),
-          t: section.title,
-          u: url,
-          h: trimmedHash,
-          p: titleId,
-        });
+        // Only process heading documents if enabled
+        if (indexContentTypes.heading) {
+          headingDocuments.push({
+            i: getNextDocId(),
+            t: section.title,
+            u: url,
+            h: trimmedHash,
+            p: titleId,
+          });
+        }
       }
 
-      if (section.content) {
+      // Only process content documents if enabled
+      if (indexContentTypes.content && section.content) {
         if (trimmedHash === false) {
           continue;
         }

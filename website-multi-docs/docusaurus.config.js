@@ -170,6 +170,14 @@ const config = {
           },
         ],
         hideSearchBarWithNoSearchContext: true,
+        // Test the new indexContentTypes optimization feature
+        indexContentTypes: {
+          title: true,      // Always index page titles
+          heading: true,    // Always index headings
+          description: false, // Test with meta descriptions enabled
+          keywords: false,  // Test without keywords for now
+          content: false,    // Test with full content indexing
+        },
       }),
     ],
   ],

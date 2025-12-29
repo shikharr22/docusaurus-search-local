@@ -1,18 +1,25 @@
 import { blogPostContainerID } from "@docusaurus/utils-common";
-import { ParsedDocument, ParsedDocumentSection } from "../../shared/interfaces";
+import { ParsedDocument, ParsedDocumentSection, ProcessedPluginOptions } from "../../shared/interfaces";
 import { getCondensedText } from "./getCondensedText";
 
 const HEADINGS = "h1, h2, h3";
 // const SUB_HEADINGS = "h2, h3";
 
-export function parseDocument($: cheerio.Root): ParsedDocument {
+export function parseDocument($: cheerio.Root, config?: Pick<ProcessedPluginOptions, 'indexContentTypes'>): ParsedDocument {
   const $pageTitle = $("article h1").first();
   const pageTitle = $pageTitle.text();
-  const description = $("meta[name='description']").attr("content") || "";
-  const keywords = ($("meta[name='keywords']").attr("content") || "").replace(
-    /,/g,
-    ", "
-  );
+  
+  // Only extract description and keywords if they will be indexed
+  const shouldProcessDescription = config?.indexContentTypes?.description !== false;
+  const shouldProcessKeywords = config?.indexContentTypes?.keywords !== false;
+  const shouldProcessContent = config?.indexContentTypes?.content !== false;
+  
+  const description = shouldProcessDescription 
+    ? ($("meta[name='description']").attr("content") || "") 
+    : "";
+  const keywords = shouldProcessKeywords 
+    ? (($("meta[name='keywords']").attr("content") || "").replace(/,/g, ", "))
+    : "";
 
   const sections: ParsedDocumentSection[] = [];
   const breadcrumb: string[] = [];
@@ -82,7 +89,11 @@ export function parseDocument($: cheerio.Root): ParsedDocument {
       } else {
         $sectionElements = $h.nextUntil(HEADINGS);
       }
-      const content = getCondensedText($sectionElements.get(), $);
+      
+      // Only extract content if it will be indexed
+      const content = shouldProcessContent 
+        ? getCondensedText($sectionElements.get(), $) 
+        : "";
 
       sections.push({
         title,

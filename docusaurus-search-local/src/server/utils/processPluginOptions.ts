@@ -40,6 +40,19 @@ export function processPluginOptions(
       ? ["en"]
       : [];
   }
+
+  // Set default content types - optimize for titles and headings only
+  config.indexContentTypes = {
+    ...{
+      title: true,
+      heading: true,
+      description: false,
+      keywords: false,
+      content: false,
+    },
+    ...config.indexContentTypes,
+  };
+
   return config;
 }
 
